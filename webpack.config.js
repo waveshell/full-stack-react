@@ -3,7 +3,9 @@ var path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: 'development',
   entry: './src/app.js',
+  devtool: 'sourcemap',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public')
