@@ -22000,10 +22000,10 @@ module.exports = function(originalModule) {
 
 /***/ }),
 
-/***/ "./src/actions/bookActions.js":
-/*!************************************!*\
-  !*** ./src/actions/bookActions.js ***!
-  \************************************/
+/***/ "./src/actions/booksActions.js":
+/*!*************************************!*\
+  !*** ./src/actions/booksActions.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22013,9 +22013,16 @@ module.exports = function(originalModule) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getBooks = getBooks;
 exports.postBooks = postBooks;
 exports.deleteBooks = deleteBooks;
 exports.updateBooks = updateBooks;
+function getBooks() {
+  return {
+    type: 'GET_BOOKS'
+  };
+}
+
 function postBooks(book) {
   return {
     type: 'POST_BOOK',
@@ -22088,7 +22095,7 @@ var _index2 = _interopRequireDefault(_index);
 
 var _cartActions = __webpack_require__(/*! ./actions/cartActions */ "./src/actions/cartActions.js");
 
-var _bookActions = __webpack_require__(/*! ./actions/bookActions */ "./src/actions/bookActions.js");
+var _booksActions = __webpack_require__(/*! ./actions/booksActions */ "./src/actions/booksActions.js");
 
 var _reduxLogger = __webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js");
 
@@ -22110,17 +22117,9 @@ var store = (0, _redux.createStore)(_index2.default, middleware);
 (0, _reactDom.render)(_react2.default.createElement(_reactRedux.Provider, { store: store }, _react2.default.createElement(_bookslist2.default, null)), document.getElementById('app'));
 
 // 2. Create and dispatch actions
-store.dispatch((0, _bookActions.postBooks)([{
-  id: 1,
-  title: 'this is the book title 1',
-  description: 'this is the book description',
-  price: 33.33
-}, {
-  id: 2,
-  title: 'title 2',
-  description: 'this is the second book description',
-  price: 50
-}]));
+// store.dispatch(postBooks(
+
+// ));
 
 // store.dispatch(deleteBooks(
 //   {
@@ -22169,6 +22168,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
+var _redux = __webpack_require__(/*! redux */ "./node_modules/redux/es/index.js");
+
+var _booksActions = __webpack_require__(/*! ../../actions/booksActions */ "./src/actions/booksActions.js");
+
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -22201,6 +22204,12 @@ var BooksList = function (_React$Component) {
   }
 
   _createClass(BooksList, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      // Dispatch an action
+      this.props.getBooks();
+    }
+  }, {
     key: 'render',
     value: function render() {
       var booksList = this.props.books.map(function (item) {
@@ -22219,7 +22228,13 @@ function mapStateToProps(state) {
     books: state.books.books
   };
 }
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(BooksList);
+
+function mapDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({
+    getBooks: _booksActions.getBooks
+  }, dispatch);
+}
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BooksList);
 
 /***/ }),
 
@@ -22260,10 +22275,24 @@ function _toConsumableArray(arr) {
 }
 
 function booksReducers() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { books: [] };
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    books: [{
+      id: 1,
+      title: 'this is the book title 1',
+      description: 'this is the book description',
+      price: 44.33
+    }, {
+      id: 2,
+      title: 'title 2',
+      description: 'this is the second book description',
+      price: 55
+    }]
+  };
   var action = arguments[1];
 
   switch (action.type) {
+    case 'GET_BOOKS':
+      return _extends({}, state, { books: [].concat(_toConsumableArray(state.books)) });
     case 'POST_BOOK':
       // let books = state.books.concat(action.payload);
       return { books: [].concat(_toConsumableArray(state.books), _toConsumableArray(action.payload)) };

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import reducers from './reducers/index';
 import { addToCart } from './actions/cartActions';
-import { postBooks, updateBooks, deleteBooks } from './actions/bookActions';
+import { postBooks, updateBooks, deleteBooks } from './actions/booksActions';
 import logger from 'redux-logger';
 import BooksList from './components/pages/bookslist';
 
@@ -22,20 +22,9 @@ render(
 );
 
 // 2. Create and dispatch actions
-store.dispatch(postBooks(
-  [{
-    id: 1,
-    title: 'this is the book title 1',
-    description: 'this is the book description',
-    price: 33.33
-  },
-  {
-    id: 2,
-    title: 'title 2',
-    description: 'this is the second book description',
-    price: 50
-  }]
-));
+// store.dispatch(postBooks(
+
+// ));
 
 // store.dispatch(deleteBooks(
 //   {
